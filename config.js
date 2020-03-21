@@ -8,8 +8,7 @@ exports.GOOGLE_CONFIG = {
   clientSecret: process.env.GOOGLE_SECRET,
   callbackURL: googleURL,
   passReqToCallback: true,
-  accessType: "offline",
-  prompt: 'consent'
+  accessType: "offline"
 }
 
 exports.CLIENT_ORIGIN = "http://localhost:3000";

@@ -43,7 +43,8 @@ app.use(session({
   store: new FileStore(),
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { secure: false }
 }))
 
 const server = app.listen(process.env.PORT || 8080, () => {
