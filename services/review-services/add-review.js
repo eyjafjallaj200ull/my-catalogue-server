@@ -1,4 +1,4 @@
-const {db} = require("../config")
+const {db} = require("../../config/config")
 
 
 const addReview = (userid, username, content, bookid, booktitle) => {

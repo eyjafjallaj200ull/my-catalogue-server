@@ -1,16 +1,6 @@
-//const jwt = require('jsonwebtoken')
-const {GOOGLE_CONFIG, JWT_SECRET, db} = require("../config")
-const atob = require('atob');
+const {db} = require("../../config/config")
 const uuid = require('uuid/v4');
-const {delAsync} = require("./redisClient")
-
-
-// const createAuthToken = user =>
-//   jwt.sign({user}, JWT_SECRET, {
-//     subject: user.id,
-//     //expiresIn: JWT_EXPIRY,
-//     algorithm: 'HS256'
-//   })
+const {delAsync} = require("../../services/redis-client")
 
 exports.google = (req, res) => {
   const io = req.app.get('io')
@@ -32,13 +22,6 @@ exports.google = (req, res) => {
                   bookshelves: req.user.bookshelves,
                   id: id
               }
-              //console.log(user)
-              //console.log(req);
-              //console.log(req.query);
-              
-              // console.log(req.session.socketId)
-              // console.log("controller");  
-              
               io.in(req.session.socketId).emit("google", user)
               res.end();
               })
@@ -51,27 +34,16 @@ exports.google = (req, res) => {
               bookshelves: req.user.bookshelves,
               id: rows[0].id
           }
-          //console.log(user)
-          //console.log(req);
-          //console.log(req.query);
-          
-          // console.log(req.session.socketId)
-          // console.log("controller");  
           
           io.in(req.session.socketId).emit("google", user)
           res.end();
           } 
       })
       .catch(function(err) {
-          // you can find errors here.
           console.log(err);
       })
   
 }
-
-// exports.refresh = (req, res) => {
-//     res.json(createAuthToken(req.user))
-// }
 
 exports.logout = (req, res) => {
     delAsync(req.session.id)

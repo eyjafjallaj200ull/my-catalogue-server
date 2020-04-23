@@ -1,4 +1,3 @@
-//const { ExtractJwt } = require('passport-jwt')
 const knex       = require('knex');
 
 const googleURL = "http://localhost:8080/google/callback";
@@ -23,11 +22,8 @@ exports.db = knex({
   }
 });
 
-// const JWT_SECRET = process.env.JWT_SECRET
-// exports.JWT_SECRET = JWT_SECRET
-
-// exports.JWT_CONFIG = {
-//   secretOrKey: JWT_SECRET,
-//   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
-//   algorithms: ['HS256']
-// }
+exports.kms = {
+  projectId: process.env.PROJECT_ID,
+  keyRingId: process.env.KEYRING_ID,
+  cryptoKeyId: process.env.CRYPTO_KEY_ID
+}

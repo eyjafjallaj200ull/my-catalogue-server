@@ -1,13 +1,14 @@
 const passport = require('passport')
 const { OAuth2Strategy: GoogleStrategy } = require('passport-google-oauth')
-//const { Strategy: JwtStrategy } = require('passport-jwt')
-const {GOOGLE_CONFIG, JWT_CONFIG, db} = require("../config");
-const fetch = require('node-fetch');
-const kmsClient = require("./kmsClient");
-const {encrypt} = require("./utils");
-const {setAsync} = require("./redisClient")
+const {GOOGLE_CONFIG} = require("../../config/config");
+const kmsClient = require("../../services/kms-client");
+const {encrypt} = require("../../services/utils");
+const {setAsync} = require("../../services/redis-client")
 const atob = require('atob');
 const btoa = require("btoa");
+const GoogleApi = require("../../services/google-api")
+const {kms} = require("../../config/config")
+const {projectId, keyRingId, cryptoKeyId} = kms;
 
 /* 
 accesstoken comes -> encrypt it with kms key
@@ -24,8 +25,6 @@ because the server is only going to be accepting request from the client website
 //session id, encrypted accessToken
 
 module.exports = () => {
-    
-
     // Allowing passport to serialize and deserialize users into sessions
     passport.serializeUser((user, cb) =>  cb(null, user))
     passport.deserializeUser((obj, cb) =>  cb(null, obj))
@@ -33,14 +32,9 @@ module.exports = () => {
     // The callback that is invoked when an OAuth provider sends back user
     // information. 
     const callback = (req, accessToken, refreshToken, profile, cb) => {
-      
-
-      //encrypt accessToken and refreshToken with kms key
       const base64AT = btoa(accessToken);
-      console.log(refreshToken)
       //const base64RT = btoa(refreshToken)
-      return encrypt("my-catalogue1", "project", "google-auth", base64AT, kmsClient)
-      //const encryptedRefreshToken = await encrypt("my-catalogue1", "project", "google-auth", base64RT, kmsClient);
+      return encrypt(projectId, keyRingId, cryptoKeyId, base64AT, kmsClient)
       //redisclient set req session Id, encrypted access t.
       .then(encryptedAccessToken => {
         console.log(req.session.id)
@@ -51,16 +45,7 @@ module.exports = () => {
         
         return setAsync(req.session.id, binaryEncryptedAT)
         .then(() =>
-            {return fetch(`https://www.googleapis.com/books/v1/mylibrary/bookshelves?key=${GOOGLE_CONFIG.clientSecret}`, {
-              method: "GET",
-              withCredentials: true,
-              credentials: 'include',
-              headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Content-Type": "application/json"
-              }
-            })
-            .then(res => res.json())
+            {GoogleApi.fetchLibrary(accessToken)
             .then(data => {
               profile.bookshelves = data.items;
               return cb(null, profile)
@@ -70,34 +55,6 @@ module.exports = () => {
           )
       })
       .catch(err => console.log(err))
-      
-
-      //db insert encrypted user id encrypted refresh token
-      
-      
-      /*await db('users').select()
-      .where('id', encryptedUserId)
-      .then(async (rows) => {
-          if (rows.length===0) {
-              // no matching records found
-              await db('users').insert({
-                  'id': encryptedUserId,
-                  "encryptedRefreshToken": encryptedRefreshToken
-              })
-          } 
-      })
-      .catch(function(err) {
-          // you can find errors here.
-          console.log(err);
-      })*/
-      
     }
-
-    // const jwtCallback = (payload, cb) => {
-    //   db("users").where("id", "=", payload.user.id)
-    //   .first().then(user => cb(null, user))
-    // }
-
     passport.use(new GoogleStrategy(GOOGLE_CONFIG, callback))
-    //passport.use(new JwtStrategy(JWT_CONFIG, jwtCallback))
   }

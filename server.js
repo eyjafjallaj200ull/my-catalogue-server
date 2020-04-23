@@ -5,13 +5,13 @@ const passport = require('passport')
 const session = require('express-session')
 const cors = require('cors')
 const socketio = require('socket.io')
-const authRouter = require('./lib/auth.router')
-const passportInit = require('./lib/passport.init')
-const {CLIENT_ORIGIN } = require('./config')
+const Router = require('./routes/routes')
+const passportInit = require('./routes/middlewares/passport.init')
+const {CLIENT_ORIGIN } = require('./config/config')
 const uuid = require('uuid/v4')
 const FileStore = require('session-file-store')(session)
 const app = express()
-const {redisClient} = require("./lib/redisClient")
+const {redisClient} = require("./services/redis-client")
 /* 
 when you get the user id encrypt it with kms key also jwt so you can send it to the client
 and save it to redis and the value will be encrypted access token
@@ -56,5 +56,5 @@ const server = app.listen(process.env.PORT || 8080, () => {
 const io = socketio(server)
 app.set('io', io)
 
-// Direct all requests to the auth router
-app.use('/', authRouter)
+// Direct all requests to the router
+app.use('/', Router)

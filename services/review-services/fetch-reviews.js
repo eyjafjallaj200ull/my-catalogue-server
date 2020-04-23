@@ -1,4 +1,4 @@
-const {db} = require("../config")
+const {db} = require("../../config/config")
 
 const fetchReviews = (id) => {
     return db("reviews").select().where("bookid", id)
