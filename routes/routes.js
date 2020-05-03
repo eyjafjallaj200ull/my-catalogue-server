@@ -7,6 +7,7 @@ const googleAuth = passport.authenticate('google', { scope: ['openid profile ema
 const bookshelfController = require("./controllers/bookshelf-controller");
 const volumeControllers = require("./controllers/volume-controllers")
 const reviewControllers = require("./controllers/review-controllers")
+const sessionExpiryCheck = require("./middlewares/sessionExpiryCheck")
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
@@ -27,13 +28,13 @@ router.get('/google', googleAuth)
 // Destroy the session when the user logs out
 router.get('/logout', authController.logout)
  
-router.get("/bookshelf", bookshelfController)
+router.get("/bookshelf", sessionExpiryCheck, bookshelfController)
 
 router.get("/volume", volumeControllers.fetchVolume)
 
-router.post("/volume/add", volumeControllers.addVolume)
+router.post("/volume/add", sessionExpiryCheck, volumeControllers.addVolume)
 
-router.post("/volume/remove", volumeControllers.removeVolume)
+router.post("/volume/remove", sessionExpiryCheck, volumeControllers.removeVolume)
 
 router.get("/reviews", reviewControllers.fetchReviews)
 

@@ -14,7 +14,6 @@ class GoogleApi {
             "Content-Type": "application/json"
             }
         })
-        .catch(err => console.log(err))
     }
     fetchBookshelf(shelfId, accessToken) {
         return fetch(`${url}mylibrary/bookshelves/${shelfId}/volumes?key=${clientSecret}`, {
@@ -48,8 +47,6 @@ class GoogleApi {
                 }
             })
             .then(res => res.json())
-            .catch(err => console.log(err)
-            )
     }
     removeVolume(shelfId, volumeId, accessToken) {
         return fetch(`${url}mylibrary/bookshelves/${shelfId}/removeVolume?volumeId=${volumeId}&key=${clientSecret}`, {
@@ -61,7 +58,6 @@ class GoogleApi {
             "Content-Type": "application/json"
             }
         })
-        .catch(err => console.log(err))
     }
 }
 

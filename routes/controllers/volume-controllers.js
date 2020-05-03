@@ -6,19 +6,19 @@ exports.fetchVolume = (req, res) => {
     .then(data => {
       const volumeInfo = data.volumeInfo;
       return res.json(volumeInfo);
-    })
+    }) //catch here
 }
 
 exports.addVolume = (req, res) => {
     addVolume(req.body.shelfId, req.body.volumeId, req.session.id)
     .then(() => {
       res.status(200).json()
-    })
+    }) //catch here
 }
 
 exports.removeVolume = (req, res) => {
     removeVolume(req.body.shelfId, req.body.volumeId, req.session.id)
     .then(() => {
       res.status(200).json()
-    })
+    }) //catch here
   }

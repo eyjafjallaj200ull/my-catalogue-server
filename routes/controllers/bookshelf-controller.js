@@ -9,7 +9,7 @@ const bookshelfController = (req, res) => {
         const books = data.items;
         return res.json(books)
       } else {
-        return res.status(401).json()
+        return res.json([]);
       } 
       } 
       else{

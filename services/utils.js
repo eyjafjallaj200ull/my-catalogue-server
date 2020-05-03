@@ -6,7 +6,7 @@ const encrypt = async (projectId, keyRingId, cryptoKeyId, plaintext, kmsClient) 
     keyRingId,
     cryptoKeyId
   );
-  const [result] = await kmsClient.encrypt({name, plaintext});
+  const [result] = await kmsClient.encrypt({name, plaintext}); 
   return result.ciphertext;
 }
 
@@ -18,7 +18,7 @@ const decrypt = async (projectId, keyRingId, cryptoKeyId, ciphertext, kmsClient)
     keyRingId,
     cryptoKeyId
   );
-  const [result] = await kmsClient.decrypt({name, ciphertext});
+  const [result] = await kmsClient.decrypt({name, ciphertext}); 
   return result.plaintext;
 }
 

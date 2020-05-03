@@ -23,8 +23,8 @@ exports.fetchReviews = (req, res) => {
         })
         console.log(reviews);
         return res.json(reviews);
-      })
-    })
+      }) //catch
+    }) //catch
 }
 
 exports.fetchMyReviews = (req, res) => {
@@ -33,26 +33,26 @@ exports.fetchMyReviews = (req, res) => {
     .then(reviews => {
       res.json(reviews)
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err)) //improve this
 }
 
 exports.addReview = (req, res) => {
     const {userid, username, content, bookid, booktitle} = req.body;
     addReview(userid, username, content, bookid, booktitle)
     .then(() => res.status(204).json())
-    .catch(err => console.log(err))
+    .catch(err => console.log(err)) //improve this
 }
 
 exports.deleteReview = (req, res) => {
     const {reviewId} = req.body;
     deleteReview(reviewId)
     .then(() => res.status(204).json())
-    .catch(err => console.log(err))
+    .catch(err => console.log(err)) //improve this
 }
 
 exports.editReview = (req, res) => {
     const {content, id} = req.body;
     editReview(content, id)
     .then(() => res.status(204).json())
-    .catch(err => console.log(err))
+    .catch(err => console.log(err)) //improve this
 }
