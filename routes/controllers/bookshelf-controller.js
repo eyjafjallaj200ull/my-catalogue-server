@@ -13,6 +13,7 @@ const bookshelfController = (req, res) => {
       } 
       } 
       else{
+        //if accessToken expires
         return res.status(401).json()
       }
     })

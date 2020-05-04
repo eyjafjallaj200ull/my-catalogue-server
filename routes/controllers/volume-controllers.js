@@ -11,14 +11,24 @@ exports.fetchVolume = (req, res) => {
 
 exports.addVolume = (req, res) => {
     addVolume(req.body.shelfId, req.body.volumeId, req.session.id)
-    .then(() => {
-      res.status(200).json()
+    .then((response) => {
+      if(response.code == 204){
+        res.status(200).json()
+      } else {
+        //if accessToken expires
+        res.status(401).json()
+      }
     }) //catch here
 }
 
 exports.removeVolume = (req, res) => {
     removeVolume(req.body.shelfId, req.body.volumeId, req.session.id)
     .then(() => {
-      res.status(200).json()
+      if(response.code == 204){
+        res.status(200).json()
+      } else {
+        //if accessToken expires
+        res.status(401).json()
+      }
     }) //catch here
   }
