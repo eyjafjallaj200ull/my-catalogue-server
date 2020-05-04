@@ -25,7 +25,7 @@ exports.google = (req, res) => {
               io.in(req.session.socketId).emit("google", user)
               res.end();
               })
-              .catch(console.log());
+              .catch(err => res.status(500).json());
           } else {
             
             const user = {
@@ -40,7 +40,7 @@ exports.google = (req, res) => {
           } 
       })
       .catch(function(err) {
-          console.log(err);
+          res.status(500).json();
       })
   
 }
@@ -53,9 +53,6 @@ exports.logout = (req, res) => {
         res.status(204).end()
     })
     .catch(err => {
-        console.log(err);
-        res.status(400).send({
-            message: err
-        })
+        res.status(500).json();
     })
 }

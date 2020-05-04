@@ -4,7 +4,7 @@ const bookshelfController = (req, res) => {
     bookshelfCall(req.query.bookshelfId, req.session.id)
     .then(data => {
       if (data){
-      console.log("hi", data);
+      console.log("shelf data", data);
       if(data.items) {
         const books = data.items;
         return res.json(books)
@@ -17,7 +17,7 @@ const bookshelfController = (req, res) => {
         return res.status(401).json()
       }
     })
-    .catch(err => console.log(err))
+    .catch(err => res.status(500).json())
   }
 
 module.exports = bookshelfController
