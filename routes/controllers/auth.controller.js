@@ -39,7 +39,7 @@ exports.google = (req, res) => {
           res.end();
           } 
       })
-      .catch(function(err) {
+      .catch((err) => {
           res.status(500).json();
       })
   

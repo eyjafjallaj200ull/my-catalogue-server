@@ -8,22 +8,19 @@ const bookshelfController = require("./controllers/bookshelf-controller");
 const volumeControllers = require("./controllers/volume-controllers")
 const reviewControllers = require("./controllers/review-controllers")
 const sessionExpiryCheck = require("./middlewares/sessionExpiryCheck")
+const addSocketIdToSession = require("./middlewares/addSocketIdToSession")
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
     extended: true
  }));
 
-//empty bookshelf sends 401 - fix it
+// Route that is triggered by the React client
+router.get('/google', addSocketIdToSession, googleAuth)
 
+// Route that is triggered by the callback from Google once 
+// the user has authenticated successfully
 router.get('/google/callback', googleAuth, authController.google)
-
-router.use((req, res, next) => {
-  req.session.socketId = req.query.socketId
-  next()
-})
-
-router.get('/google', googleAuth)
 
 // Destroy the session when the user logs out
 router.get('/logout', authController.logout)

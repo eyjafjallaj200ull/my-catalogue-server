@@ -12,13 +12,6 @@ const uuid = require('uuid/v4')
 const FileStore = require('session-file-store')(session)
 const app = express()
 const {redisClient} = require("./services/redis-client")
-/* 
-when you get the user id encrypt it with kms key also jwt so you can send it to the client
-and save it to redis and the value will be encrypted access token
-also save it to the database with encrypted refresh token
-each time you make a request that needs user id you can send it in the query str, decrypt and use it like that
-*/
-//let authToken = "";
 
 redisClient.on("error", function(error) {
   console.error(error);
