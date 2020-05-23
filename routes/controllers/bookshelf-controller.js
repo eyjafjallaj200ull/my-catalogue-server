@@ -3,14 +3,13 @@ const bookshelfCall = require("../../services/bookshelf-call")
 const bookshelfController = (req, res) => {
     bookshelfCall(req.query.bookshelfId, req.session.id)
     .then(data => {
-      if (data){
-      console.log("shelf data", data);
-      if(data.items) {
-        const books = data.items;
-        return res.json(books)
-      } else {
-        return res.json([]);
-      } 
+      if (data) {
+        if(data.items) {
+          const books = data.items;
+          return res.json(books)
+        } else {
+          return res.json([]);
+        } 
       } 
       else{
         //if accessToken expires

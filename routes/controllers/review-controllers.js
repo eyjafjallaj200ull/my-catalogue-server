@@ -12,7 +12,6 @@ exports.fetchReviews = (req, res) => {
           const userReview = idRows.find(obj => {
             return obj.id === review.id;
           })
-          console.log(userReview)
           if(userReview) {
             review.isUserReview = true;
             return review;
@@ -21,7 +20,6 @@ exports.fetchReviews = (req, res) => {
             return review;
           }
         })
-        console.log(reviews);
         return res.json(reviews);
       }) //catch
     })
