@@ -13,7 +13,6 @@
     "@google-cloud/kms": "^1.5.3",
     "atob": "^2.1.2",
     "btoa": "^1.2.1",
-    "connect-redis": "^4.0.4",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
